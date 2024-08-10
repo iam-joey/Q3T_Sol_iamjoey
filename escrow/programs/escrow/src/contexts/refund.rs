@@ -15,8 +15,7 @@ pub struct Refund<'info> {
     pub maker: Signer<'info>,
     pub mint_a: InterfaceAccount<'info, Mint>,
     #[account(
-        init_if_needed,
-        payer=maker,
+        mut,
         associated_token::mint=mint_a,
         associated_token::authority=maker,
         associated_token::token_program=token_program
@@ -25,8 +24,6 @@ pub struct Refund<'info> {
     #[account(
         mut,
         close=maker,
-        has_one=mint_a,
-        has_one=maker,
         seeds=[b"escrow",maker.key().as_ref(),escrow.seed.to_le_bytes().as_ref()],
         bump=escrow.bump
     )]
@@ -45,30 +42,30 @@ pub struct Refund<'info> {
 
 impl<'info> Refund<'info> {
     pub fn refund_and_close_vault(&mut self) -> Result<()> {
-        let accounts = TransferChecked {
+       
+
+         let signer_seeds: [&[&[u8]]; 1] = [&[
+            b"escrow",
+            self.maker.to_account_info().key.as_ref(),
+            &self.escrow.seed.to_le_bytes()[..],
+            &[self.escrow.bump],
+        ]];
+
+         let accounts = TransferChecked {
             authority: self.escrow.to_account_info(),
             from: self.vault.to_account_info(),
             mint: self.mint_a.to_account_info(),
             to: self.maker_ata.to_account_info(),
         };
-        let maker_key = self.maker.key();
-        let escrow_seed = self.escrow.seed.to_be_bytes();
-        let signer_seeds = &[
-            b"escrow",
-            maker_key.as_ref(),
-            &escrow_seed[..],
-            &[self.escrow.bump],
-        ];
 
-        let signer_seeds_arr = [&signer_seeds[..]];
 
         let ctx = CpiContext::new_with_signer(
             self.token_program.to_account_info(),
             accounts,
-            &signer_seeds_arr,
+            &signer_seeds,
         );
 
-        transfer_checked(ctx, self.escrow.recive_amount, self.mint_a.decimals)?;
+        transfer_checked(ctx, self.vault.amount, self.mint_a.decimals)?;
 
         let accounts = CloseAccount {
             account: self.vault.to_account_info(),
@@ -79,7 +76,7 @@ impl<'info> Refund<'info> {
         let ctx = CpiContext::new_with_signer(
             self.token_program.to_account_info(),
             accounts,
-            &signer_seeds_arr,
+            &signer_seeds,
         );
 
         close_account(ctx)

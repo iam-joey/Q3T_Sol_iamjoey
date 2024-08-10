@@ -10,6 +10,7 @@ import {
   TOKEN_2022_PROGRAM_ID,
   TOKEN_PROGRAM_ID,
   getAssociatedTokenAddressSync,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { assert } from "chai";
 
@@ -28,14 +29,24 @@ describe("escrow", () => {
   ];
 
   const seed = new anchor.BN(randomBytes(8));
+  const seed2 = new anchor.BN(randomBytes(8));
   let maker_ata_mint_a;
   let taker_ata_mint_b;
-  let [escrow, bump] = anchor.web3.PublicKey.findProgramAddressSync(
+  const [escrow_pda, bump] = anchor.web3.PublicKey.findProgramAddressSync(
     [
       Buffer.from("escrow"),
       maker.publicKey.toBuffer(),
       // seed.toArrayLike(Buffer, "le", 8),
       seed.toBuffer().reverse(),
+    ],
+    program.programId
+  );
+  const [escrow_pda_2, _bump] = anchor.web3.PublicKey.findProgramAddressSync(
+    [
+      Buffer.from("escrow"),
+      maker.publicKey.toBuffer(),
+      // seed.toArrayLike(Buffer, "le", 8),
+      seed2.toBuffer().reverse(),
     ],
     program.programId
   );
@@ -90,16 +101,14 @@ describe("escrow", () => {
     );
   });
 
-  it("make escrow", async () => {
+  it("make two escrows", async () => {
     const vault = getAssociatedTokenAddressSync(
       mintA.publicKey,
-      escrow,
+      escrow_pda,
       true,
       TOKEN_PROGRAM_ID
     );
-    console.log("vault ", vault.toString());
-    console.log("escrow", escrow.toString());
-    const tx = await program.methods
+    const tx1 = await program.methods
       .make(seed, new anchor.BN(100), new anchor.BN(200))
       .accounts({
         maker: maker.publicKey,
@@ -109,9 +118,49 @@ describe("escrow", () => {
       })
       .signers([maker])
       .rpc();
-    console.log("signature is", tx);
+    console.log("signature is", tx1);
+    const tx2 = await program.methods
+      .make(seed2, new anchor.BN(69), new anchor.BN(700))
+      .accounts({
+        maker: maker.publicKey,
+        mintA: mintA.publicKey,
+        mintB: mintB.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .signers([maker])
+      .rpc();
     assert(
       (await connection.getTokenAccountBalance(vault)).value.uiAmount == 100
     );
+  });
+  it("refund escrow", async () => {
+    const tx = await program.methods
+      .refund()
+      .accountsPartial({
+        maker: maker.publicKey,
+        mintA: mintA.publicKey,
+        escrow: escrow_pda_2,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+      })
+      .signers([maker])
+      .rpc();
+    console.log("signature is", tx);
+    console.log("escrow", escrow_pda.toString());
+  });
+  it("take escrow", async () => {
+    const tx = await program.methods
+      .take()
+      .accountsPartial({
+        taker: taker.publicKey,
+        maker: maker.publicKey,
+        mintA: mintA.publicKey,
+        mintB: mintB.publicKey,
+        escrow: escrow_pda,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .signers([taker])
+      .rpc();
+    console.log("sign is", tx);
   });
 });
