@@ -23,7 +23,7 @@ pub struct Make<'info> {
         mut,
         associated_token::mint=mint_a,
         associated_token::authority=maker,
-        associated_token::token_program=token_program
+        associated_token::token_program=token_program   
     )]
     pub maker_ata: InterfaceAccount<'info, TokenAccount>,
     #[account(
