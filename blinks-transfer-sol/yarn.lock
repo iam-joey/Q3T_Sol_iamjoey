@@ -209,17 +209,17 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.10.4.tgz#427d5549943a9c6fce808e39ea64dbe60d4047f1"
   integrity sha512-WJgX9nzTqknM393q1QJDJmoW28kUfEnybeTfVNcNAPnIx210RXm2DiXiHzfNPJNIUUb1tJnz/l4QGtJ30PgWmA==
 
-"@solana/actions-spec@^2.0.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@solana/actions-spec/-/actions-spec-2.2.0.tgz#9514ef28452fe0ac55f45a34ea34d2b212797895"
-  integrity sha512-APQohvb0frZWuIBwWT+9rIYqiejEc3vyjrueRc2CkDo6DpgtMskVt7TtpFCMBdncgS1O8QoPPJe8pUnWhP2gYg==
+"@solana/actions-spec@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@solana/actions-spec/-/actions-spec-2.2.2.tgz#07a2790271b98e9c4fb69daf7bf78ce62908de0b"
+  integrity sha512-+iu1B8nbEHnzkhuBST8Kzes3yPucuLgTVKdd80Cot8wo6IJ+pH3hzSPGeJIoqykpnGMwJxMihmQlFIy+IyC2+w==
 
-"@solana/actions@^1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@solana/actions/-/actions-1.6.1.tgz#8826298aaeb4d5af2092af517e9eb5ae2772a7bc"
-  integrity sha512-TfPrpegxgd2ab3xNy0Z8YdASUXBRP9UtAYLxTVDl/JysrvsZI/iCm3pGGpfff5w5lZ3otqy/AlNMqRTS2ORTEQ==
+"@solana/actions@^1.6.4":
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/@solana/actions/-/actions-1.6.4.tgz#f6dc4ea87bb022094054ed10ee4a6acdbb1ffe48"
+  integrity sha512-/3slukZ4TR4OScbyfaRzfT9cms7jmcSblvqkQK9AtJRMiktTL6ozhP91TAFUKZU85gtxnMWr30jSTW946JA+Qg==
   dependencies:
-    "@solana/actions-spec" "^2.0.0"
+    "@solana/actions-spec" "^2.2.2"
     "@solana/qr-code-styling" "^1.6.0"
     "@solana/web3.js" "^1.61.0"
     bs58 "^5.0.0"

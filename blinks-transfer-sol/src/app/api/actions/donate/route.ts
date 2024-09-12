@@ -95,6 +95,12 @@ export const POST = async (req: Request) => {
       fields: {
         transaction,
         message: "Thanks for the donation",
+        links: {
+          next: {
+            type: "post",
+            href: "/api/actions/verify",
+          },
+        },
       },
     });
 

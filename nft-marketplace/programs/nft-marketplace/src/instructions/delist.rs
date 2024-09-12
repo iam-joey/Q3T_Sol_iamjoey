@@ -1,6 +1,10 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
-    associated_token::AssociatedToken ,token_interface::{Mint, TokenAccount, TokenInterface,TransferChecked,transfer_checked}
+    associated_token::AssociatedToken,
+    token_interface::{
+        close_account, transfer_checked, CloseAccount, Mint, TokenAccount, TokenInterface,
+        TransferChecked,
+    },
 };
 
 use crate::{state::Listing, MarketPlace};
@@ -40,26 +44,42 @@ pub struct DeList<'info> {
 }
 
 impl<'info> DeList<'info> {
-   pub fn withdraw_nft(&mut self)->Result<()>{
-
-        let seeds=&[
-                b"listing",
-                &self.user.key().to_bytes()[..],
-                &self.marketplace.key().to_bytes()[..],
-                &[self.listing.bump]
+    pub fn withdraw_nft(&mut self) -> Result<()> {
+        let seeds = &[
+            b"listing",
+            &self.user.key().to_bytes()[..],
+            &self.marketplace.key().to_bytes()[..],
+            &[self.listing.bump],
         ];
-        let signer_seeds=&[&seeds[..]];
+        let signer_seeds = &[&seeds[..]];
 
-        let accounts=TransferChecked{
-                from:self.nft_vault.to_account_info(),
-                to:self.maker_nft_ata.to_account_info(),
-                authority:self.listing.to_account_info(),
-                mint:self.nft_mint.to_account_info()
+        let accounts = TransferChecked {
+            from: self.nft_vault.to_account_info(),
+            to: self.maker_nft_ata.to_account_info(),
+            authority: self.listing.to_account_info(),
+            mint: self.nft_mint.to_account_info(),
         };
 
-        let ctx=CpiContext::new_with_signer(self.token_program.to_account_info(), accounts, signer_seeds);
+        let ctx = CpiContext::new_with_signer(
+            self.token_program.to_account_info(),
+            accounts,
+            signer_seeds,
+        );
 
-        transfer_checked(ctx, 1, self.nft_mint.decimals)
+        transfer_checked(ctx, 1, self.nft_mint.decimals)?;
 
-   }
+        let accounts = CloseAccount {
+            account: self.nft_vault.to_account_info(),
+            authority: self.listing.to_account_info(),
+            destination: self.user.to_account_info(),
+        };
+
+        let ctx = CpiContext::new_with_signer(
+            self.token_program.to_account_info(),
+            accounts,
+            signer_seeds,
+        );
+
+        close_account(ctx)
+    }
 }

@@ -23,12 +23,12 @@ pub mod nft_marketplace {
         ctx.accounts.initalize_marketplace(name, fees, &ctx.bumps)
     }
 
-    pub fn list_nft(ctx:Context<List>,price:u64)->Result<()>{
+    pub fn list_nft(ctx: Context<List>, price: u64) -> Result<()> {
         ctx.accounts.create_user_listing(price, &ctx.bumps)?;
         ctx.accounts.transafer_nft_vault()
     }
 
-    pub fn delist_nft(ctx:Context<DeList>)->Result<()>{
+    pub fn delist_nft(ctx: Context<DeList>) -> Result<()> {
         ctx.accounts.withdraw_nft()
     }
 }

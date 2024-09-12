@@ -3,6 +3,8 @@ import {
   ACTIONS_CORS_HEADERS,
   NextActionPostRequest,
   CompletedAction,
+  ActionPostResponse,
+  ActionGetResponse,
 } from "@solana/actions";
 import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
 
@@ -63,6 +65,36 @@ export const POST = async (req: Request) => {
         `You have now completed an action chain! ` +
         `Here was the signature from the last action's transaction: ${signature} `,
     };
+
+    // const payload: ActionGetResponse = {
+    //   icon: "https://solana-actions.vercel.app/solana_devs.jpg",
+    //   title: "Transfer SOL",
+    //   label: "Send me something",
+    //   description: "Just send me some SOL for living",
+    //   links: {
+    //     actions: [
+    //       {
+    //         href: "/api/actions/donate?amount=0.1",
+    //         label: "0.2 SOL",
+    //       },
+    //       {
+    //         href: "/api/actions/donate?amount=0.5",
+    //         label: "0.2 SOL",
+    //       },
+    //       {
+    //         href: "/api/actions/donate?amount={amount}",
+    //         label: "SEND SOL",
+    //         parameters: [
+    //           {
+    //             name: "amount",
+    //             label: "Enter the SOl amount",
+    //             required: true,
+    //           },
+    //         ],
+    //       },
+    //     ],
+    //   },
+    // };
 
     return Response.json(payload, {
       headers: ACTIONS_CORS_HEADERS,

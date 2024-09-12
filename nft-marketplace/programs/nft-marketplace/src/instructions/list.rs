@@ -1,6 +1,8 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
-    associated_token::AssociatedToken, metadata::{MasterEditionAccount, Metadata, MetadataAccount}, token_interface::{Mint, TokenAccount, TokenInterface,TransferChecked,transfer_checked}
+    associated_token::AssociatedToken,
+    metadata::{MasterEditionAccount, Metadata, MetadataAccount},
+    token_interface::{transfer_checked, Mint, TokenAccount, TokenInterface, TransferChecked},
 };
 
 use crate::{state::Listing, MarketPlace};
@@ -78,17 +80,16 @@ impl<'info> List<'info> {
         Ok(())
     }
 
-    pub fn transafer_nft_vault(&mut self)->Result<()>{
-        let accounts=TransferChecked{
-                from:self.maker_nft_ata.to_account_info(),
-                to:self.nft_vault.to_account_info(),
-                authority:self.user.to_account_info(),
-                mint:self.nft_mint.to_account_info()
+    pub fn transafer_nft_vault(&mut self) -> Result<()> {
+        let accounts = TransferChecked {
+            from: self.maker_nft_ata.to_account_info(),
+            to: self.nft_vault.to_account_info(),
+            authority: self.user.to_account_info(),
+            mint: self.nft_mint.to_account_info(),
         };
 
-        let ctx=CpiContext::new(self.token_program.to_account_info(), accounts);
-        
-        transfer_checked(ctx, 1, self.nft_mint.decimals)
+        let ctx = CpiContext::new(self.token_program.to_account_info(), accounts);
 
+        transfer_checked(ctx, 1, self.nft_mint.decimals)
     }
 }

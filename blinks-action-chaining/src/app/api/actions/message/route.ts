@@ -15,7 +15,8 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 
-export const GET = () => {
+export const GET = (req: Request) => {
+  console.log(req.url);
   const payload: ActionGetResponse = {
     icon: "https://solana-actions.vercel.app/solana_devs.jpg",
     description: "hello world",
@@ -49,6 +50,7 @@ export const OPTIONS = GET;
 export const POST = async (req: Request) => {
   try {
     const url = new URL(req.url);
+    console.log(req.url);
     const body: ActionPostRequest = await req.json();
     let account: PublicKey;
     console.log("here");

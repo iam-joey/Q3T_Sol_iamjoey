@@ -52,6 +52,7 @@ export const OPTIONS = GET;
 export const POST = async (req: Request) => {
   try {
     const url = new URL(req.url);
+    console.log(req.url);
     const body: ActionPostRequest = await req.json();
     let account: PublicKey;
     console.log("here");
@@ -86,12 +87,40 @@ export const POST = async (req: Request) => {
       fields: {
         transaction,
         message: "all wewnt good in message 2",
+        links: {
+          next: {
+            type: "inline",
+            action: {
+              icon: "https://solana-actions.vercel.app/solana_devs.jpg",
+              description: "hello world",
+              label: "asdasdasd",
+              title: "asdasd",
+              type: "action",
+              links: {
+                actions: [
+                  {
+                    href: "/api/actions/message?message={message}",
+                    label: "Send message",
+                    parameters: [
+                      {
+                        name: "message",
+                        label: "enter the message you wanna send",
+                        required: true,
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        },
       },
     });
 
     return Response.json(payload, {
       headers: ACTIONS_CORS_HEADERS,
     });
+    ``;
   } catch (error) {
     console.log(error);
     return Response.json(

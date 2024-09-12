@@ -10,4 +10,8 @@ This folder contains a smart contract for an escrow system where two users can m
 
 While making this vault smart contract i understood the concepts of how can i send SOL to a PDA and how can i withdraw SOL from that specific pda.
 
+## BLINKS (Transfer-SOL)
+
+i made a blink which can transfer-sol to the creator of the blink with just one tap.
+
 ### AMM (Automated Market Maker)
