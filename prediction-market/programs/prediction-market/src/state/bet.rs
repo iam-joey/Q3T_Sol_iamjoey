@@ -11,11 +11,12 @@ pub struct Bet {
     pub deadline_to_join: i64, //opponent can join before this
     pub start_time: i64,       //bet start
     pub end_time: i64,         //bet end
-    pub amount: u64,           //amount he's placing about the price movement in lamports
+    pub maker_deposit: u64,    //amount he's placing about the price movement in lamports
     pub amount_settled: bool,
     pub seed: u64,
     pub bump: u8,
-    pub vault_pool:u8
+    pub vault_pool: u8,
+    pub opponent_deposit: u64, //in lamports should store
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug)]
@@ -33,5 +34,5 @@ pub enum BetStatus {
 }
 
 impl Space for Bet {
-    const INIT_SPACE: usize = 8 + 8 + (1 + 32) + 32 + (8 + 8) + 1 + (8 * 5) + 1 + 4 + 1+1;
+    const INIT_SPACE: usize = 8 + 8 + (1 + 32) + 32 + (8 + 8) + 1 + (8 * 5) + 1 + 4 + 1 + 1;
 }

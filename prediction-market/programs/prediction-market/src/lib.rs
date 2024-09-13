@@ -5,7 +5,7 @@ pub mod errors;
 pub mod state;
 
 pub use contexts::*;
-pub use error::*;
+pub use errors::*;
 pub use state::*;
 
 declare_id!("G3GnkQNmF8dykbf2jZ4BpMxuVztAv6gEsqdPrjc3Cme5");
