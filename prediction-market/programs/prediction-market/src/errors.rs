@@ -10,4 +10,6 @@ pub enum Errors {
     InvalidOdds,
     #[msg("You can't join because event alreday started")]
     EventAlreadyStarted,
+    #[msg("Can't cancel event started")]
+    EventCantCancel,
 }

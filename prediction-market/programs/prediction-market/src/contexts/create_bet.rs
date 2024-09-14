@@ -84,7 +84,7 @@ impl<'info> CreateBet<'info> {
             user.total_winnings = 0;
             user.total_losses = 0;
             user.total_draws = 0;
-            user.bump=bumps.user_account
+            user.bump = bumps.user_account
         }
         self.user_account.increase_bets();
         self.send_money_to_vault(amount)

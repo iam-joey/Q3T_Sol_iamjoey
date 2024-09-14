@@ -44,8 +44,11 @@ pub mod prediction_market {
         )
     }
 
-    pub fn seed(ctx:Context<AcceptBet>)->Result<()>{
+    pub fn accept_bet(ctx: Context<AcceptBet>,_seed:u64) -> Result<()> {
         ctx.accounts.accept_bet(&ctx.bumps)
+    }
+     pub fn cancel_bet(ctx: Context<CancelBet>,_seed: u64) -> Result<()> {
+        ctx.accounts.cancel_bet()
     }
 }
 
