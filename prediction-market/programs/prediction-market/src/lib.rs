@@ -43,6 +43,10 @@ pub mod prediction_market {
             &ctx.bumps,
         )
     }
+
+    pub fn seed(ctx:Context<AcceptBet>)->Result<()>{
+        ctx.accounts.accept_bet(&ctx.bumps)
+    }
 }
 
 #[derive(Accounts)]

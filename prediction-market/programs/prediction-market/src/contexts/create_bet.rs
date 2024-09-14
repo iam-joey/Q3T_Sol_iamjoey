@@ -3,7 +3,7 @@ use anchor_lang::{
     system_program::{transfer, Transfer},
 };
 
-use crate::{errors::Errors, state::Bet, BetStatus, Odds};
+use crate::{errors::Errors, state::Bet, BetStatus, Odds, User};
 
 #[derive(Accounts)]
 #[instruction(seed:u64)]
@@ -23,6 +23,14 @@ pub struct CreateBet<'info> {
         bump
     )]
     pub vault_pool: SystemAccount<'info>,
+    #[account(
+        init_if_needed,
+        payer=maker,
+        space=User::INIT_SPACE,
+        seeds=[b"user_profile",maker.key().as_ref()],
+        bump
+    )]
+    pub user_account: Account<'info, User>,
     pub system_program: Program<'info, System>,
 }
 
@@ -61,9 +69,24 @@ impl<'info> CreateBet<'info> {
             amount_settled: false,
             seed,
             bump: bumps.bet,
-            vault_pool: bumps.vault_pool,
-            opponent_deposit,
+            vault_pool_bump: bumps.vault_pool,
+            opponent_deposit, //sol in lamports
         });
+
+        let user = &mut self.user_account;
+
+        if user.total_bets == 0
+            && user.total_winnings == 0
+            && user.total_losses == 0
+            && user.total_draws == 0
+        {
+            user.total_bets = 0;
+            user.total_winnings = 0;
+            user.total_losses = 0;
+            user.total_draws = 0;
+            user.bump=bumps.user_account
+        }
+        self.user_account.increase_bets();
         self.send_money_to_vault(amount)
     }
 

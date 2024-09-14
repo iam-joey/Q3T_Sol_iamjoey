@@ -8,4 +8,6 @@ pub enum Errors {
     AmountNotSufficient,
     #[msg("Invalid Odds")]
     InvalidOdds,
+    #[msg("You can't join because event alreday started")]
+    EventAlreadyStarted,
 }

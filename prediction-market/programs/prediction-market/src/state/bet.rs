@@ -15,7 +15,7 @@ pub struct Bet {
     pub amount_settled: bool,
     pub seed: u64,
     pub bump: u8,
-    pub vault_pool: u8,
+    pub vault_pool_bump: u8,
     pub opponent_deposit: u64, //in lamports should store
 }
 
