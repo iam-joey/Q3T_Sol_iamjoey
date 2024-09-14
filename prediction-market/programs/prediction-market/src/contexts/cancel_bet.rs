@@ -37,7 +37,7 @@ impl<'info> CancelBet<'info> {
     }
 
     pub fn return_funds(&mut self) -> Result<()> {
-        let signer_seeds:&[&[&[u8]]] = &[&[
+        let signer_seeds: &[&[&[u8]]] = &[&[
             b"vault",
             self.bet.to_account_info().key.as_ref(),
             &[self.bet.vault_pool_bump],
@@ -50,7 +50,7 @@ impl<'info> CancelBet<'info> {
         let ctx = CpiContext::new_with_signer(
             self.system_program.to_account_info(),
             accounts,
-            signer_seeds
+            signer_seeds,
         );
         transfer(ctx, self.vault_pool.lamports())
     }

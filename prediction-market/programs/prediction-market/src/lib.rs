@@ -44,11 +44,16 @@ pub mod prediction_market {
         )
     }
 
-    pub fn accept_bet(ctx: Context<AcceptBet>,_seed:u64) -> Result<()> {
+    pub fn accept_bet(ctx: Context<AcceptBet>, _seed: u64) -> Result<()> {
         ctx.accounts.accept_bet(&ctx.bumps)
     }
-     pub fn cancel_bet(ctx: Context<CancelBet>,_seed: u64) -> Result<()> {
+    pub fn cancel_bet(ctx: Context<CancelBet>, _seed: u64) -> Result<()> {
         ctx.accounts.cancel_bet()
+    }
+
+    //used for withdrawal money from the protocol treasury
+    pub fn withdraw_treasury(ctx:Context<WithdrawTreasury>)->Result<()>{
+        ctx.accounts.withdraw_treasury()
     }
 }
 
