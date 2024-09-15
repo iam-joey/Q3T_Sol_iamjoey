@@ -51,8 +51,16 @@ pub mod prediction_market {
         ctx.accounts.cancel_bet()
     }
 
+    pub fn check_winner(ctx:Context<CheckWinner>,_seed:u64)->Result<()>{
+        ctx.accounts.check_winner()
+    }
+
+    pub fn claim_prize(ctx:Context<ClaimPrize>,_seed:u64)->Result<()>{
+        ctx.accounts.claim_prize()
+    }
+
     //used for withdrawal money from the protocol treasury
-    pub fn withdraw_treasury(ctx:Context<WithdrawTreasury>)->Result<()>{
+    pub fn withdraw_treasury(ctx: Context<WithdrawTreasury>) -> Result<()> {
         ctx.accounts.withdraw_treasury()
     }
 }

@@ -1,4 +1,7 @@
-use anchor_lang::{prelude::*, system_program::{Transfer,transfer}};
+use anchor_lang::{
+    prelude::*,
+    system_program::{transfer, Transfer},
+};
 
 use crate::state::House;
 
@@ -24,14 +27,21 @@ impl<'info> WithdrawTreasury<'info> {
     pub fn withdraw_treasury(&mut self) -> Result<()> {
         let binding_key = self.house.key();
         let bump_binding = [self.house.treasury_bump];
-        let signer_seeds = &[&[b"treasury", binding_key.as_ref(),&bump_binding][..]];
+        let signer_seeds = &[&[b"treasury", 
+        binding_key.as_ref(), 
+        &bump_binding][..]];
 
-        let accounts=Transfer{
-                from:self.treasury.to_account_info(),
-                to:self.admin.to_account_info()
+        
+        let accounts = Transfer {
+            from: self.treasury.to_account_info(),
+            to: self.admin.to_account_info(),
         };
 
-        let ctx=CpiContext::new_with_signer(self.system_program.to_account_info(), accounts, signer_seeds);
+        let ctx = CpiContext::new_with_signer(
+            self.system_program.to_account_info(),
+            accounts,
+            signer_seeds,
+        );
 
         transfer(ctx, self.treasury.lamports())
     }

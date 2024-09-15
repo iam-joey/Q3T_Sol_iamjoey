@@ -17,6 +17,7 @@ pub struct Bet {
     pub bump: u8,
     pub vault_pool_bump: u8,
     pub opponent_deposit: u64, //in lamports should store
+    pub winner: Option<Pubkey>,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug)]
@@ -25,7 +26,7 @@ pub struct Odds {
     pub opponent_odds: u64,
 }
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug)]
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug, PartialEq)]
 pub enum BetStatus {
     FindingOpponent,
     WaitingToStart,
@@ -34,5 +35,6 @@ pub enum BetStatus {
 }
 
 impl Space for Bet {
-    const INIT_SPACE: usize = 8 + 8 + (1 + 32) + 32 + (8 + 8) + 1 + (8 * 5) + 1 + 4 + 1 + 1;
+    const INIT_SPACE: usize =
+        8 + 8 + (1 + 32) + 32 + (8 + 8) + 1 + (8 * 5) + 1 + 4 + 1 + 1 + (1 + 32);
 }

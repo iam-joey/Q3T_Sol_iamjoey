@@ -2,8 +2,6 @@ use anchor_lang::prelude::*;
 
 #[error_code]
 pub enum Errors {
-    #[msg("Bet's not availabe")]
-    BetDoNotExists,
     #[msg("Deposit amount equal to the odds")]
     AmountNotSufficient,
     #[msg("Invalid Odds")]
@@ -12,4 +10,10 @@ pub enum Errors {
     EventAlreadyStarted,
     #[msg("Can't cancel event started")]
     EventCantCancel,
+    #[msg("You can't perform this action")]
+    UnauthorizedAccess,
+    #[msg("The bet has not ended yet.")]
+    BetNotEndedYet,
+    #[msg("The bet has not been resolved yet. Please wait until the bet is completed.")]
+    BetNotResolvedYet,
 }

@@ -33,6 +33,7 @@ pub struct CancelBet<'info> {
 impl<'info> CancelBet<'info> {
     pub fn cancel_bet(&mut self) -> Result<()> {
         require!(self.bet.opponent.is_none(), Errors::EventCantCancel);
+        self.user_account.decrease_bets();
         self.return_funds()
     }
 

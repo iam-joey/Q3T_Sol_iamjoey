@@ -71,6 +71,7 @@ impl<'info> CreateBet<'info> {
             bump: bumps.bet,
             vault_pool_bump: bumps.vault_pool,
             opponent_deposit, //sol in lamports
+            winner: None,
         });
 
         let user = &mut self.user_account;
