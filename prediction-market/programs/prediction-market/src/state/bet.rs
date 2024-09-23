@@ -35,6 +35,23 @@ pub enum BetStatus {
 }
 
 impl Space for Bet {
-    const INIT_SPACE: usize =
-        8 + 8 + (1 + 32) + 32 + (8 + 8) + 1 + (8 * 5) + 1 + 4 + 1 + 1 + (1 + 32);
+    const INIT_SPACE: usize = 8    // Anchor discriminator
+        + 32   // Pubkey for maker
+        + 1 + 32 // Option<Pubkey> for opponent (1 byte for option + 32 bytes for Pubkey)
+        + 32   // Pubkey for token_mint
+        + 8    // u64 for maker_odds
+        + 8    // u64 for opponent_odds
+        + 1    // BetStatus enum (1 byte)
+        + 8    // i64 for price_prediction
+        + 8    // i64 for deadline_to_join
+        + 8    // i64 for start_time
+        + 8    // i64 for end_time
+        + 8    // u64 for maker_deposit
+        + 1    // bool for amount_settled
+        + 8    // u64 for seed
+        + 1    // u8 for bump
+        + 1    // u8 for vault_pool_bump
+        + 8    // u64 for opponent_deposit
+        + 1 + 32; // Option<Pubkey> for winner (1 byte for option + 32 bytes for Pubkey)
 }
+
